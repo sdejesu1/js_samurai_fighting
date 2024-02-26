@@ -56,8 +56,23 @@ const player = new Fighter({
         attack1: {
             imageSrc: "./edo_assets/samuraiMack/Attack1.png",
             framesMax: 6
+        },
+        takeHit: {
+            imageSrc: "./edo_assets/samuraiMack/Take Hit - white silhouette.png",
+            framesMax: 4
+        },
+        death: {
+            imageSrc: "./edo_assets/samuraiMack/Death.png",
+            framesMax: 6
         }
-
+    },
+    attackBox: {
+        offset: {
+            x: 100,
+            y: 50
+        },
+        width: 150,
+        height: 50
     }
 })
 
@@ -89,8 +104,23 @@ const enemy = new Fighter({
         attack1: {
             imageSrc: "./edo_assets/kenji/Attack1.png",
             framesMax: 4
+        },
+        takeHit: {
+            imageSrc: "./edo_assets/kenji/Take hit.png",
+            framesMax: 3
+        },
+        death: {
+            imageSrc: "./edo_assets/kenji/Death.png",
+            framesMax: 7
         }
-
+    },
+    attackBox: {
+        offset: {
+            x: -170,
+            y: 50
+        },
+        width: 170,
+        height: 50
     }
 })
 
@@ -131,6 +161,8 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     background.update()
     shop.update()
+    c.fillStyle = 'rgba(255, 255, 255, 0.2)'
+    c.fillRect(0,0, canvas.width, canvas.height)
     player.update()
     enemy.update()
 
@@ -171,20 +203,34 @@ function animate() {
         enemy.switchSprite('idle')
     }
 
-    // detecting for collision
+    // detecting for collision and enemy gets hit
     if (rectangularCollision({rectangle1: player, rectangle2: enemy})
-        && player.isAttacking) {
+        && player.isAttacking && player.framesCurrent === 4) {
+        enemy.takeHit()
         player.isAttacking = false
-        enemy.health -= 20
-        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        gsap.to('#enemyHealth', {
+            width: enemy.health + '%'
+        })
+    }
+
+    // if player misses
+    if (player.isAttacking && player.framesCurrent === 4) {
+        player.isAttacking = false
     }
 
     if (rectangularCollision({rectangle1: enemy, rectangle2: player})
-        && enemy.isAttacking) {
+        && enemy.isAttacking && enemy.framesCurrent === 2) {
+        player.takeHit()
         enemy.isAttacking = false
-        player.health -= 20
-        document.querySelector('#playerHealth').style.width = player.health + '%'
+        gsap.to('#enemyHealth', {
+            width: player.health + '%'
+        })
     }
+    // if enemy misses
+    if (enemy.isAttacking && enemy.framesCurrent === 2) {
+        enemy.isAttacking = false
+    }
+
 
     // end game based on health
     if (enemy.health <= 0 || player.health <= 0) {
@@ -196,37 +242,43 @@ animate()
 
 window.addEventListener('keydown', (event) => {
     // player keys
-    switch (event.key) {
-        case 'd':
-            keys.d.pressed = true
-            player.lastKey = 'd'
-            break
-        case 'a':
-            keys.a.pressed = true
-            player.lastKey = 'a'
-            break
-        case 'w':
-            player.velocity.y = -20
-            break
-        case ' ':
-            player.attack()
-            break
+    if (!player.dead){
+        switch (event.key) {
+            case 'd':
+                keys.d.pressed = true
+                player.lastKey = 'd'
+                break
+            case 'a':
+                keys.a.pressed = true
+                player.lastKey = 'a'
+                break
+            case 'w':
+                player.velocity.y = -20
+                break
+            case ' ':
+                player.attack()
+                break
+        }
+    }
 
-        // enemy keys
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = true
-            enemy.lastKey = 'ArrowRight'
-            break
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = true
-            enemy.lastKey = 'ArrowLeft'
-            break
-        case 'ArrowUp':
-            enemy.velocity.y = -20
-            break
-        case 'ArrowDown':
-            enemy.attack()
-            break
+    // enemy keys
+    if (!enemy.dead) {
+        switch (event.key) {
+            case 'ArrowRight':
+                keys.ArrowRight.pressed = true
+                enemy.lastKey = 'ArrowRight'
+                break
+            case 'ArrowLeft':
+                keys.ArrowLeft.pressed = true
+                enemy.lastKey = 'ArrowLeft'
+                break
+            case 'ArrowUp':
+                enemy.velocity.y = -20
+                break
+            case 'ArrowDown':
+                enemy.attack()
+                break
+        }
     }
 })
 
