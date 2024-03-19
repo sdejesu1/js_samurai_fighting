@@ -1,82 +1,13 @@
 const canvas = document.querySelector("canvas")
 const c = canvas.getContext('2d')
-
 // 16 by 9 ratio for width & height
 canvas.width = 1024
 canvas.height = 576
-
 // making the canvas a black color
-c.fillRect(0,0, canvas.width, canvas.height)
-
+c.fillRect(0, 0, canvas.width, canvas.height)
 // gravity constant for velocity
 const gravity = .7
 
-const background = new Sprite({
-    position: {
-        x: 0,
-        y: 0
-    },
-    imageSrc: "./edo_assets/background.png"
-})
-
-const shop = new Sprite({
-    position: {
-        x: 605,
-        y: 128
-    },
-    imageSrc: "./edo_assets/shop.png",
-    scale: 2.75,
-    framesMax: 6
-})
-
-const player = new Fighter({
-    position:{x: 0, y: 0},
-    velocity: {x: 0, y: 0},
-    imageSrc: "./edo_assets/samuraiMack/Idle.png",
-    framesMax: 8,
-    scale: 2.5,
-    offset: {x: 215, y: 157},
-    sprites: {
-        idle: {
-            imageSrc: "./edo_assets/samuraiMack/Idle.png",
-            framesMax: 8
-        },
-        run: {
-            imageSrc: "./edo_assets/samuraiMack/Run.png",
-            framesMax: 8
-        },
-        jump: {
-            imageSrc: "./edo_assets/samuraiMack/Jump.png",
-            framesMax: 2
-        },
-        fall: {
-            imageSrc: "./edo_assets/samuraiMack/Fall.png",
-            framesMax: 2
-        },
-        attack1: {
-            imageSrc: "./edo_assets/samuraiMack/Attack1.png",
-            framesMax: 6
-        },
-        takeHit: {
-            imageSrc: "./edo_assets/samuraiMack/Take Hit - white silhouette.png",
-            framesMax: 4
-        },
-        death: {
-            imageSrc: "./edo_assets/samuraiMack/Death.png",
-            framesMax: 6
-        }
-    },
-    attackBox: {
-        offset: {
-            x: 100,
-            y: 50
-        },
-        width: 150,
-        height: 50
-    }
-})
-
-/*
 const player = new Fighter({
     position:{x: 200, y: 0},
     velocity: {x: 0, y: 0},
@@ -123,85 +54,6 @@ const player = new Fighter({
         height: 50
     }
 })
-*/
-
-const enemy = new Fighter({
-    position:{x: 800, y: 100},
-    velocity: {x: 0, y: 0},
-    color: 'blue',
-    imageSrc: "./edo_assets/kenji/Idle.png",
-    framesMax: 8,
-    scale: 2.5,
-    offset: {x: 215, y: 167},
-    sprites: {
-        idle: {
-            imageSrc: "./edo_assets/kenji/Idle.png",
-            framesMax: 4
-        },
-        run: {
-            imageSrc: "./edo_assets/kenji/Run.png",
-            framesMax: 8
-        },
-        jump: {
-            imageSrc: "./edo_assets/kenji/Jump.png",
-            framesMax: 2
-        },
-        fall: {
-            imageSrc: "./edo_assets/kenji/Fall.png",
-            framesMax: 2
-        },
-        attack1: {
-            imageSrc: "./edo_assets/kenji/Attack1.png",
-            framesMax: 4
-        },
-        takeHit: {
-            imageSrc: "./edo_assets/kenji/Take hit.png",
-            framesMax: 3
-        },
-        death: {
-            imageSrc: "./edo_assets/kenji/Death.png",
-            framesMax: 7
-        },
-
-        // reverse images
-        idleRev: {
-            imageSrc: "./edo_assets/kenji/Idlereverse.png",
-            framesMax: 4
-        },
-        runRev: {
-            imageSrc: "./edo_assets/kenji/Runreverse.png",
-            framesMax: 8
-        },
-        jumpRev: {
-            imageSrc: "./edo_assets/kenji/Jumpreverse.png",
-            framesMax: 2
-        },
-        fallRev: {
-            imageSrc: "./edo_assets/kenji/Fallreverse.png",
-            framesMax: 2
-        },
-        attack1Rev: {
-            imageSrc: "./edo_assets/kenji/Attack1reverse.png",
-            framesMax: 4
-        },
-        takeHitRev: {
-            imageSrc: "./edo_assets/kenji/Take hitreverse.png",
-            framesMax: 3
-        },
-        deathRev: {
-            imageSrc: "./edo_assets/kenji/Deathreverse.png",
-            framesMax: 7
-        }
-    },
-    attackBox: {
-        offset: {
-            x: -170,
-            y: 50
-        },
-        width: 170,
-        height: 50
-    }
-})
 
 const keys = {
     a: {
@@ -226,8 +78,56 @@ const keys = {
     }
 }
 
+// game states
+/**
+// Define game states
+const GameState = {
+    Start: false,
+    SelectPlayer: false,
+    SelectEnemy: false,
+    Cinematic: false,
+    Fight: false,
+    RematchOrQuit: false
+};
 
-decreaseTimer()
+// Current state of the game
+let currentState = GameState.Fight;
+
+// Function to update the game based on the current state
+function updateGameState() {
+    switch(currentState) {
+        case GameState.Start:
+            // Logic for the start state
+            document.querySelector('#healthBar').style.display = 'none'
+            break;
+        case GameState.SelectPlayer:
+            // Logic for selecting player character
+            break;
+        case GameState.SelectEnemy:
+            // Logic for selecting enemy character
+            break;
+        case GameState.Cinematic:
+            // Logic for cinematic
+            break;
+        case GameState.Fight:
+            // Logic for fight
+            document.querySelector('#healthBar').style.display = 'flex'
+            break;
+        case GameState.RematchOrQuit:
+            // Logic for rematch or quit
+            break;
+        default:
+            // Handle invalid state
+            break;
+    }
+}
+
+// Example function to change game state
+
+// Call updateGameState() to handle initial state
+updateGameState();
+*/
+
 
 // animation loop
 function animate() {
@@ -237,9 +137,20 @@ function animate() {
     background.update()
     shop.update()
     c.fillStyle = 'rgba(255, 255, 255, 0.2)'
-    c.fillRect(0,0, canvas.width, canvas.height)
+    c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     enemy.update()
+
+    if (player.isReversed) {
+        player.attackBox.position.x += -3 * player.attackBox.offset.x
+    }
+    if (enemy.isReversed) {
+        enemy.attackBox.position.x += -1 * enemy.attackBox.offset.x + 70
+    }
+
+    // testing the attack boxes
+    //c.fillRect(player.attackBox.position.x, player.attackBox.position.y, player.attackBox.width, player.attackBox.height)
+    //c.fillRect(enemy.attackBox.position.x, enemy.attackBox.position.y, enemy.attackBox.width, enemy.attackBox.height)
 
     player.velocity.x = 0
     enemy.velocity.x = 0
@@ -247,37 +158,69 @@ function animate() {
     // player movement
     if (keys.a.pressed && player.lastKey === 'a') {
         player.velocity.x = -5
-        player.switchSprite('run')
+        if (player.velocity.y === 0){
+            player.switchSprite('runRev')
+        }
     } else if (keys.d.pressed && player.lastKey === 'd') {
         player.velocity.x = 5
-        player.switchSprite('run')
+        if (player.velocity.y === 0){
+            player.switchSprite('run')
+        }
     } else {
-        player.switchSprite('idle')
+        if (player.isReversed) {
+            player.switchSprite('idleRev')
+            console.log('idleRev')
+        } else {
+            player.switchSprite('idle')
+            console.log('idle')
+        }
+    }
+
+    // enemy movement
+    if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
+        enemy.velocity.x = -5
+        if (enemy.velocity.y === 0){
+            enemy.switchSprite('run')
+        }
+        console.log('run')
+    } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
+        enemy.velocity.x = 5
+        if (enemy.velocity.y === 0){
+            enemy.switchSprite('runRev')
+        }
+        console.log('runRev')
+    } else if (enemy.velocity.y === 0) {
+        if (enemy.isReversed) {
+            enemy.switchSprite('idleRev')
+            console.log('idleRev')
+        } else {
+            enemy.switchSprite('idle')
+            console.log('idle')
+        }
     }
 
     // player jumping and reversing
-    if (player.velocity.y < 0) {
-        player.switchSprite('jump')
-    } else if (player.velocity.y > 0) {
-        player.switchSprite('fall')
+    if (player.isReversed) {
+        // enemy jumping and reversing
+        if (player.velocity.y < 0) {
+            player.switchSprite('jumpRev')
+            console.log('jumpRev')
+        } else if (player.velocity.y > 0) {
+            player.switchSprite('fallRev')
+            console.log('fallRev')
+        }
+    } else {
+        if (player.velocity.y < 0) {
+            player.switchSprite('jump')
+            console.log('jump')
+        } else if (player.velocity.y > 0) {
+            player.switchSprite('fall')
+            console.log('fall')
+        }
     }
 
-    /*
-    if (enemy.isReversed) {
-            enemy.switchSprite('jumpRev');
-        } else {
-            enemy.switchSprite('jump');
-        }
-
-    if (enemy.isReversed) {
-            enemy.switchSprite('fallRev');
-        } else {
-            enemy.switchSprite('fall');
-        }
-     */
-
     // enemy jumping
-    if (enemy.isReversed){
+    if (enemy.isReversed) {
         // enemy jumping and reversing
         if (enemy.velocity.y < 0) {
             enemy.switchSprite('jumpRev')
@@ -297,40 +240,14 @@ function animate() {
     }
 
 
-    // enemy movement
-    if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-        enemy.velocity.x = -5
-        enemy.switchSprite('run')
-        console.log('run')
-    } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 5
-        enemy.switchSprite('runRev')
-        console.log('runRev')
-    } else if (enemy.velocity.y === 0) {
-        if (enemy.isReversed) {
-            enemy.switchSprite('idleRev')
-            console.log('idleRev')
-        } else {
-            enemy.switchSprite('idle')
-            console.log('idle')
-        }
-    }{
-
-    }
-
     // detecting for collision and enemy gets hit
     if (rectangularCollision({rectangle1: player, rectangle2: enemy})
-        && player.isAttacking && player.framesCurrent === 4) {
+        && player.isAttacking && (player.framesCurrent === 4)) {
         enemy.takeHit()
         player.isAttacking = false
         gsap.to('#enemyHealth', {
             width: enemy.health + '%'
         })
-    }
-
-    // if player misses
-    if (player.isAttacking && player.framesCurrent === 4) {
-        player.isAttacking = false
     }
 
     if (rectangularCollision({rectangle1: enemy, rectangle2: player})
@@ -342,10 +259,9 @@ function animate() {
         })
     }
     // if enemy misses
-    if (enemy.isAttacking && enemy.framesCurrent === 2) {
+    if (enemy.isAttacking && enemy.framesCurrent === 3) {
         enemy.isAttacking = false
     }
-
 
     // end game based on health
     if (enemy.health <= 0 || player.health <= 0) {
@@ -353,18 +269,19 @@ function animate() {
     }
 }
 
-animate()
-
 window.addEventListener('keydown', (event) => {
     // player keys
-    if (!player.dead){
+    if (!player.dead) {
         switch (event.key) {
             case 'd':
                 keys.d.pressed = true
                 player.lastKey = 'd'
+                player.isReversed = false
                 break
             case 'a':
                 keys.a.pressed = true
+                player.lastKey = 'a'
+                player.isReversed = true
                 break
             case 'w':
                 player.velocity.y = -20
@@ -396,8 +313,8 @@ window.addEventListener('keydown', (event) => {
                 break
         }
     }
-})
 
+})
 window.addEventListener('keyup', (event) => {
     // player keys
     switch (event.key) {
@@ -425,3 +342,18 @@ window.addEventListener('keyup', (event) => {
             break
     }
 })
+
+
+function gameLoop() {
+    decreaseTimer()
+    animate()
+}
+
+const background = createBackground('wooden_village_entrance')
+const shop = createBackground('shop')
+
+
+//const player = createCharacters('player')
+const enemy = createCharacters('enemy')
+
+gameLoop()

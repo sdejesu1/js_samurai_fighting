@@ -1,0 +1,22 @@
+Base game complete
+
+- currently on:
+    - Adding luffy as a character:
+        - added most of his assets, still hit and death is left
+        - still working out the kinks of his different frames, then hit box
+    - Getting player to reverse
+    - game states;
+        - start
+        - select character (player)
+        - select character (enemy)
+        - cinematic
+        - fight
+        - rematch or quit
+
+Future developments:
+- extra characters:
+    - zoro, sanji, western fighter, boxer, link
+        - for each character, have two versions (facing left or facing right) for both characters
+- music
+- multiple environments
+- deployment
