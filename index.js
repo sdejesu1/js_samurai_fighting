@@ -7,7 +7,7 @@ canvas.height = 576
 c.fillRect(0, 0, canvas.width, canvas.height)
 // gravity constant for velocity
 const gravity = .7
-
+/*
 const player = new Fighter({
     position:{x: 200, y: 0},
     velocity: {x: 0, y: 0},
@@ -54,7 +54,7 @@ const player = new Fighter({
         height: 50
     }
 })
-
+*/
 const keys = {
     a: {
         pressed: false
@@ -353,7 +353,7 @@ const background = createBackground('wooden_village_entrance')
 const shop = createBackground('shop')
 
 
-//const player = createCharacters('player')
+const player = createCharacters('player')
 const enemy = createCharacters('enemy')
 
 gameLoop()
